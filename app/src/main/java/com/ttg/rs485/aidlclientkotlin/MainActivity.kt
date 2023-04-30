@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "client-MainActivity:xwg"
     }
     private var mService: IDataService? = null
-    var myAidlInterface: IMyAidlInterface? = null
     private val mHandler = Handler()
     private val mRunnable = object : Runnable {
         override fun run() {
@@ -53,12 +52,6 @@ class MainActivity : AppCompatActivity() {
             } catch (e: RemoteException) {
                 e.printStackTrace()
             }
-//            myAidlInterface = IMyAidlInterface.Stub.asInterface(service)
-//            myAidlInterface?.let { myInterface ->
-//                // 在这个作用域内，myAidlInterface 被智能地转换成非空类型 IMyAidlInterface
-//                val str = myInterface.get15RandomString()
-//                Log.i(TAG, "str----------$str")
-//            }
 
         }
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -70,10 +63,17 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate.. ")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val intent = Intent().apply {
-            setClassName("com.example.aidlserver", "com.example.aidlserver.DataServiceNoPolling")
-//            setClassName("com.example.aidlserver", "com.example.aidlserver.MyService")
-        }
+
+//        val intent = Intent().apply {
+//            setClassName("com.example.aidlserver", "com.example.aidlserver.DataServiceNoPolling")
+////            setClassName("com.example.aidlserver", "com.example.aidlserver.MyService")
+//        }
+//        bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+
+        val intent = Intent()
+//        intent.setPackage("com.example.aidlserver")
+//        intent.action = "com.example.service.action"
+        intent.setClassName("com.example.aidlserver", "com.example.aidlserver.DataServiceNoPolling")
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         mHandler.postDelayed(mRunnable, 2000)
     }
